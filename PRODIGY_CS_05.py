@@ -1,12 +1,10 @@
 from scapy.all import sniff, conf
 from scapy.layers.inet import IP, TCP, UDP
 
-# Ensure Scapy uses pcap
 conf.use_pcap = True
 
-# Function to process each captured packet
 def packet_callback(packet):
-    # Check if the packet has an IP layer
+  
     if IP in packet:
         ip_layer = packet[IP]
         print(f"\n[+] New Packet: {packet.summary()}")
@@ -14,7 +12,6 @@ def packet_callback(packet):
         print(f"Destination IP: {ip_layer.dst}")
         print(f"Protocol: {ip_layer.proto}")
 
-        # Check if the packet has a TCP or UDP layer and print the payload
         if packet.haslayer(TCP):
             print("TCP Packet")
             tcp_layer = packet[TCP]
@@ -32,6 +29,5 @@ def packet_callback(packet):
         else:
             print("Other Protocol")
 
-# Start sniffing
 print("Starting packet sniffer...")
 sniff(prn=packet_callback, store=False)
